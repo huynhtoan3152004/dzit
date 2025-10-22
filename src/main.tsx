@@ -4,7 +4,7 @@ import { RecoilRoot } from "recoil";
 import App from "./App";
 import "./index.css";
 
-import Toast from "react-toast-package";
+import { Toaster } from "react-hot-toast";
 import { initTheme, updateCursor } from "./utils/theme";
 import initGA from "./utils/ga";
 
@@ -21,7 +21,7 @@ window.onload = () => updateCursor();
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <RecoilRoot>
-      <Toast timeOutDuration={5000} position="top-right" />
+      <Toaster position="top-right" />
       <App />
     </RecoilRoot>
   </React.StrictMode>
