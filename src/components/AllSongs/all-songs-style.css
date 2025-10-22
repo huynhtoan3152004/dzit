@@ -116,3 +116,95 @@
 .add-song input {
   flex-grow: 1;
 }
+
+/* Loading state */
+.content.loading-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+  padding: 2rem;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--primary_color, #fff);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-spinner p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Add song form */
+.add-song-form {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.add-song-form h3 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.2rem;
+}
+
+.add-song-form input {
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.add-song-form input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.add-song-form input:focus {
+  outline: none;
+  border-color: var(--primary_color, rgba(255, 255, 255, 0.5));
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.add-song-form button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--primary_color, #fff);
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+}
+
+.add-song-form button:hover:not(:disabled) {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+.add-song-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

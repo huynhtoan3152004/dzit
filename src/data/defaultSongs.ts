@@ -5,4 +5,10 @@ export const defaultSongs = [
     starred: true,
     addedOn: new Date().toISOString(),
   },
+  {
+    id: "U1usrHw-GvI",
+    title: "Lofi Music",
+    starred: true,
+    addedOn: new Date().toISOString(),
+  },
 ];

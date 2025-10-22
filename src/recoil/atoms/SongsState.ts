@@ -1,16 +1,30 @@
 import { atom } from "recoil";
 
+export interface ISong {
+  id: string;
+  title?: string;
+  thumbnails?: {
+    default: {
+      url: string;
+    };
+  };
+  channelTitle?: string;
+  starred?: boolean;
+  addedOn?: string;
+  liveBroadcastContent?: string;
+}
+
 export interface ISongsState {
-  songs: any[];
-  starredIds: string[];
+  songs: ISong[];
+  starredSongs: string[];
   isLoading: boolean;
 }
 
 export const SongsState = atom<ISongsState>({
-  key: "SONGS_STATE",
+  key: "SongsState",
   default: {
     songs: [],
-    starredIds: JSON.parse(window.localStorage.getItem("starred") || "[]"),
+    starredSongs: [],
     isLoading: true,
   },
 });
