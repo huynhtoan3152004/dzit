@@ -175,10 +175,10 @@ function HappyBirthday({ onClose }: HappyBirthdayProps) {
         </div>
 
         <div className="hbd-overlay__final" ref={finalRef}>
-          <h1 className="hbd-overlay__title" ref={titleRef}>
-            Happy Birthday Như Quỳnh
-          </h1>
           <div className="hbd-overlay__card" ref={photoRef}>
+            <h1 className="hbd-overlay__card-title" ref={titleRef}>
+              Happy Birthday 
+            </h1>
             <div className="hbd-overlay__photo">
               <img src={celebrationPhoto} alt="Happy Birthday" />
             </div>
