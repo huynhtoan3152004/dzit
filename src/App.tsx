@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import Player from "./components/player/Player";
 import AllSongs from "./components/AllSongs";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import HappyBirthday from "./components/HappyBirthday";
+import { useRecoilState } from "recoil";
 import { PlayerState } from "./recoil/atoms/PlayerState";
 import { generateRandomIndex } from "./utils/songs";
 import { ISongsState, SongsState } from "./recoil/atoms/SongsState";
@@ -19,6 +20,7 @@ declare global {
 function App() {
   const [playerData, setPlayerData] = useRecoilState(PlayerState);
   const [player, setPlayer] = useState<any>();
+  const [isBirthdayVisible, setBirthdayVisible] = useState(false);
   const [songState, setSongsData] = useRecoilState(SongsState);
   const isSpotify = playerData.activeSong?.includes("open.spotify.com");
   const songItem = songState.songs?.find(
@@ -123,6 +125,10 @@ function App() {
     });
   };
 
+  const toggleBirthday = () => {
+    setBirthdayVisible((prev) => !prev);
+  };
+
   return (
     <div className="App" unselectable="on">
       <div className="iframe-container" unselectable="on">
@@ -184,10 +190,17 @@ function App() {
           {playerData.isPlaying && playerData.isBuffering && "Buffering.. ⏳"}
         </div>
 
-        <Player player={player} />
+        <Player player={player} onBirthdayClick={toggleBirthday} />
       </div>
 
       <Overlay showAlways={isSpotify} player={player} />
+      {isBirthdayVisible && (
+        <HappyBirthday
+          onClose={() => {
+            setBirthdayVisible(false);
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -27,6 +27,7 @@ export type ControlsPropsType = {
   duration: number;
   onProgressChange: React.FormEventHandler<HTMLInputElement>;
   onInfoClick(): void;
+  onBirthdayClick?: () => void;
 };
 
 function Controls({
@@ -43,6 +44,7 @@ function Controls({
   duration,
   onProgressChange,
   onInfoClick,
+  onBirthdayClick,
 }: ControlsPropsType) {
   const controlRef = useRef(document.createElement("section"));
   const dragData = useRef({ isActive: false });
@@ -120,6 +122,11 @@ function Controls({
       <button onClick={onPlayListClick}>
         <SongsIcon />
       </button>
+      {onBirthdayClick && (
+        <button onClick={onBirthdayClick} title="Chúc mừng sinh nhật">
+          🎉
+        </button>
+      )}
       <PopoverTrigger onClick={onInfoClick}>
         <InfoIcon style={{ paddingLeft: 0 }} />
       </PopoverTrigger>
@@ -204,6 +211,11 @@ function Controls({
             <button onClick={onPlayListClick}>
               <SongsIcon />
             </button>
+            {onBirthdayClick && (
+              <button onClick={onBirthdayClick} title="Chúc mừng sinh nhật">
+                🎉
+              </button>
+            )}
             <PopoverTrigger onClick={onInfoClick}>
               <InfoIcon style={{ paddingLeft: 0 }} />
             </PopoverTrigger>

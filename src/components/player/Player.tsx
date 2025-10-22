@@ -16,9 +16,10 @@ import * as Popover from "@radix-ui/react-popover";
 
 export type PlayerProps = {
   player: any;
+  onBirthdayClick?: () => void;
 };
 
-function Player({ player }: PlayerProps) {
+function Player({ player, onBirthdayClick }: PlayerProps) {
   const [playerData, setPlayerData] = useRecoilState(PlayerState);
   const [songsData, setSongsData] = useRecoilState(SongsState);
   const [playerState, dispatch] = useReducer(playerReducer, initialPlayerState);
@@ -29,7 +30,7 @@ function Player({ player }: PlayerProps) {
   const { videoData } = playerInfo || {};
   const isSpotify = playerData.activeSong?.includes("open.spotify.com");
   const songMeta = songsData.songs.find(
-    (song) => song.url === playerData.activeSong
+    (song) => song.id === playerData.activeSong || song.url === playerData.activeSong
   );
   const { title, author } = (isSpotify ? songMeta : videoData) || {};
 
@@ -282,7 +283,7 @@ function Player({ player }: PlayerProps) {
           </Popover.PopoverContent>
         </Popover.PopoverPortal>
 
-        <Controls
+  <Controls
           title={title}
           author={author}
           volume={volume}
@@ -296,6 +297,7 @@ function Player({ player }: PlayerProps) {
           duration={videoMeta.duration || 0}
           currentDuration={videoMeta.current || 0}
           onInfoClick={handleInfoClick}
+          onBirthdayClick={onBirthdayClick}
         />
       </Popover.Root>
     </div>

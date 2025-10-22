@@ -8,6 +8,8 @@ export interface ISong {
       url: string;
     };
   };
+  url?: string;
+  iframeUrl?: string;
   channelTitle?: string;
   starred?: boolean;
   addedOn?: string;
