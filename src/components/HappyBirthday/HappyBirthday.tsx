@@ -8,16 +8,16 @@ import ballon3 from "../../img/ballon3.svg?url";
 import celebrationPhoto from "../../img/irene.jpg";
 
 const messages = [
-  "Chúc bạn thêm một tuổi mới thật ấm áp và bình an.",
-  "Mình luôn ở đây, sẵn sàng lắng nghe và đồng hành cùng bạn.",
-  "Mong bạn luôn giữ được nụ cười và niềm tin vào chính mình.",
-  "Khi mệt, cứ tựa vào mình – bạn không bao giờ phải đi một mình đâu.",
-  "Mọi ước mơ của bạn rồi sẽ có cách để thành hiện thực.",
-  "Cảm ơn vì đã là một người bạn tuyệt vời – và mình tự hào về bạn.",
-  "Hôm nay hãy chậm lại, tận hưởng từng phút giây thuộc về bạn.",
-  "Dù có chuyện gì, mình vẫn ở đây – một chỗ dựa vững chắc cho bạn.",
-  "Chúc bạn mạnh mẽ, dịu dàng và luôn được yêu thương.",
-  "Tuổi mới rực rỡ – và bạn xứng đáng với những điều tốt đẹp nhất.",
+  "Chúc Như Quỳnh thêm một tuổi mới thật ấm áp và bình an.",
+  "Tòn luôn ở đây, sẵn sàng lắng nghe và đồng hành cùng Quỳnh.",
+  "Mong Quỳnh luôn rạng rỡ — vì Quỳnh thật sự xứng đáng với mọi điều tốt đẹp.",
+  "Nếu có lúc thấy mệt, chỉ cần ngoảnh lại, sẽ thấy có người vẫn luôn ở phía sau",
+  "Mọi ước mơ của Quỳnh rồi sẽ có cách để thành hiện thực.",
+  "Cảm ơn vì đã là một người bạn tuyệt vời – là một người mình luôn trân trọng.",
+  "Hôm nay là một ngày đặc biệt, tận hưởng từng phút giây tuyệt vời thuộc về cô ấy nhé.",
+  "Tuổi mới rực rỡ, luôn giữ nụ cười trên môi..",
+  "Chúc Quỳnh mạnh mẽ, dịu dàng và luôn được yêu thương và đầy ấp tiếng cười.",
+  "Chúc mừng sinh nhật Như Quỳnh!",
 ];
 
 // Wishes will be shown sequentially ~10s each
