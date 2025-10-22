@@ -1,64 +1,148 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
 .hbd-overlay {
   position: fixed;
   inset: 0;
-  background: #ffffff;
-  color: #1c1c1c;
+  /* Minimal galaxy: white dominant with subtle charcoal shimmer */
+  background:
+    radial-gradient(1200px 800px at 50% -10%, rgba(0,0,0,0.06), transparent 60%),
+    radial-gradient(900px 600px at 10% 110%, rgba(0,0,0,0.05), transparent 60%),
+    linear-gradient(180deg, #ffffff 0%, #fbfbfb 45%, #f6f6f6 100%);
+  color: #161616;
   z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(24px, 4vw, 48px);
+  overflow: hidden;
+  font-family: "Poppins", "Segoe UI", sans-serif;
+}
+
+.hbd-overlay__stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.28) 1px, transparent 1.2px),
+    radial-gradient(rgba(0,0,0,0.18) 1px, transparent 1.2px),
+    radial-gradient(rgba(0,0,0,0.12) 1px, transparent 1.2px);
+  background-position:
+    10% 20%,
+    70% 60%,
+    40% 80%;
+  background-size:
+    240px 240px,
+    320px 320px,
+    400px 400px;
+  animation: hbd-twinkle 4.8s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes hbd-twinkle {
+  0% { opacity: 0.35; filter: saturate(0.85); }
+  100% { opacity: 0.6; filter: saturate(1); }
+}
+
+.hbd-overlay__content {
+  position: relative;
+  width: min(760px, 92vw);
+  height: min(82vh, 760px);
+  padding: clamp(24px, 5vw, 40px);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 28px;
+  box-shadow: 0 22px 60px rgba(0, 0, 0, 0.12), inset 0 0 0 1px rgba(0,0,0,0.04);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 64px 24px 48px;
-  overflow: hidden;
   text-align: center;
+  backdrop-filter: blur(8px);
+  z-index: 1;
 }
 
 .hbd-overlay__title {
-  font-size: clamp(28px, 5vw, 48px);
-  font-weight: 800;
-  margin-bottom: 24px;
-  letter-spacing: 2px;
+  font-size: clamp(34px, 6.6vw, 64px);
+  font-family: 'Great Vibes', 'Poppins', cursive;
+  font-weight: 400;
+  margin-bottom: clamp(6px, 2vw, 14px);
+  letter-spacing: 0.6px;
+  color: #161616;
+}
+
+/* Message area acts as the greeting card center */
+.hbd-overlay__message-area {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 85%;
+  height: clamp(160px, 28vh, 280px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hbd-overlay__message {
   position: absolute;
-  top: 30%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: clamp(20px, 3vw, 32px);
-  max-width: 720px;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 clamp(8px, 3vw, 24px);
+  font-size: clamp(22px, 4.2vw, 32px);
+  line-height: 1.6;
   opacity: 0;
-  line-height: 1.4;
+  color: #1a1a1a;
+  font-family: 'Great Vibes', 'Poppins', cursive;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+}
+
+.hbd-overlay__card {
+  width: min(420px, 78vw);
+  padding: clamp(18px, 4vw, 28px);
+  border-radius: 28px;
+  background: linear-gradient(165deg, rgba(255,255,255,0.95) 0%, rgba(244,244,255,0.92) 100%);
+  box-shadow: 0 24px 54px rgba(79, 108, 255, 0.22), inset 0 0 0 1px rgba(111, 122, 255, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  backdrop-filter: blur(6px);
 }
 
 .hbd-overlay__photo {
-  margin-top: auto;
-  opacity: 0;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 12px 34px rgba(79, 108, 255, 0.18);
+  aspect-ratio: 3 / 4;
 }
 
 .hbd-overlay__photo img {
-  width: min(320px, 60vw);
-  border-radius: 20px;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16);
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
-.hbd-overlay__balloons {
+/* .hbd-overlay__photo--bottom: no longer used */
+
+/* Final reveal: photo and title centered together */
+.hbd-overlay__final {
   position: absolute;
-  bottom: -160px;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   display: flex;
-  gap: clamp(16px, 6vw, 60px);
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 2.5vw, 20px);
 }
 
-.hbd-overlay__balloon {
-  width: clamp(120px, 18vw, 180px);
-  opacity: 0;
-}
+/* Removed extra wishes chips for minimalism */
 
 .hbd-overlay__actions {
-  position: absolute;
-  bottom: 32px;
   display: flex;
   gap: 12px;
   opacity: 0;
@@ -66,31 +150,104 @@
 
 .hbd-overlay__button {
   border: none;
-  background: #141414;
+  background: linear-gradient(135deg, #7f5af0, #232323);
   color: #ffffff;
   border-radius: 999px;
-  padding: 12px 24px;
+  padding: 12px 28px;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 12px 28px rgba(127, 90, 240, 0.28);
+}
+
+/* exit button fixed bottom center */
+.hbd-overlay__button--fixed {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: clamp(18px, 3vw, 28px);
+  z-index: 3;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + clamp(18px, 3vw, 28px));
 }
 
 .hbd-overlay__button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 24px rgba(20, 20, 20, 0.16);
+  box-shadow: 0 16px 36px rgba(127, 90, 240, 0.32);
+}
+
+.hbd-overlay__balloons {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hbd-overlay__balloon {
+  position: absolute;
+  bottom: -320px; /* start further below so they float higher */
+  width: clamp(90px, 12vw, 160px);
+  opacity: 0;
+  will-change: transform, opacity;
+  filter: drop-shadow(0 12px 18px rgba(0,0,0,0.12));
 }
 
 @media (max-width: 640px) {
-  .hbd-overlay {
-    padding: 48px 16px 32px;
+  .hbd-overlay__content {
+    border-radius: 24px;
+    width: min(540px, 90vw);
+    height: auto;
+    min-height: clamp(520px, 94vh, 620px);
+    padding: clamp(24px, 6vw, 32px);
+  }
+
+  .hbd-overlay__message-area {
+    width: 90%;
+    height: clamp(180px, 36vh, 260px);
+  }
+
+  .hbd-overlay__title {
+    font-size: clamp(32px, 11vw, 54px);
+  }
+
+  .hbd-overlay__card {
+    width: min(340px, 78vw);
+    padding: clamp(18px, 5vw, 24px);
   }
 
   .hbd-overlay__balloon {
-    width: clamp(90px, 28vw, 140px);
+    width: clamp(72px, 24vw, 120px);
+  }
+}
+
+@media (max-width: 430px) {
+  .hbd-overlay {
+    padding: clamp(16px, 5vw, 24px);
   }
 
-  .hbd-overlay__actions {
-    bottom: 24px;
+  .hbd-overlay__content {
+    width: 100%;
+    min-height: calc(100vh - clamp(60px, 16vh, 110px));
+    border-radius: 22px;
+  }
+
+  .hbd-overlay__message-area {
+    height: clamp(200px, 42vh, 260px);
+  }
+
+  .hbd-overlay__message {
+    padding-inline: clamp(12px, 6vw, 24px);
+    font-size: clamp(24px, 6.4vw, 30px);
+  }
+
+  .hbd-overlay__card {
+    width: min(300px, 86vw);
+    padding: clamp(16px, 6vw, 22px);
+  }
+
+  .hbd-overlay__button {
+    width: min(320px, 88vw);
+    padding-block: 14px;
+    font-size: 17px;
   }
 }

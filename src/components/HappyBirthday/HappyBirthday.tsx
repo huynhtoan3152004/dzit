@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import gsap from "gsap";
 import confetti from "canvas-confetti";
 import "./happy-birthday-style.css";
@@ -8,11 +8,19 @@ import ballon3 from "../../img/ballon3.svg?url";
 import celebrationPhoto from "../../img/irene.jpg";
 
 const messages = [
-  "Hôm nay là ngày đặc biệt nhất – chúc bạn có một sinh nhật thật rực rỡ!",
-  "Cảm ơn bạn vì đã luôn lan tỏa năng lượng tích cực đến mọi người xung quanh.",
-  "Mong rằng mọi ước mơ của bạn đều trở thành hiện thực trong tuổi mới.",
-  "Hãy tận hưởng từng khoảnh khắc tuyệt vời, vì bạn xứng đáng với tất cả niềm vui này!",
+  "Chúc bạn thêm một tuổi mới thật ấm áp và bình an.",
+  "Mình luôn ở đây, sẵn sàng lắng nghe và đồng hành cùng bạn.",
+  "Mong bạn luôn giữ được nụ cười và niềm tin vào chính mình.",
+  "Khi mệt, cứ tựa vào mình – bạn không bao giờ phải đi một mình đâu.",
+  "Mọi ước mơ của bạn rồi sẽ có cách để thành hiện thực.",
+  "Cảm ơn vì đã là một người bạn tuyệt vời – và mình tự hào về bạn.",
+  "Hôm nay hãy chậm lại, tận hưởng từng phút giây thuộc về bạn.",
+  "Dù có chuyện gì, mình vẫn ở đây – một chỗ dựa vững chắc cho bạn.",
+  "Chúc bạn mạnh mẽ, dịu dàng và luôn được yêu thương.",
+  "Tuổi mới rực rỡ – và bạn xứng đáng với những điều tốt đẹp nhất.",
 ];
+
+// Wishes will be shown sequentially ~10s each
 
 export type HappyBirthdayProps = {
   onClose: () => void;
@@ -22,8 +30,38 @@ function HappyBirthday({ onClose }: HappyBirthdayProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const photoRef = useRef<HTMLDivElement | null>(null);
   const actionsRef = useRef<HTMLDivElement | null>(null);
-  const messageRefs = useRef<HTMLParagraphElement[]>([]);
-  const balloonRefs = useRef<HTMLImageElement[]>([]);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const messageRefs = useRef<(HTMLParagraphElement | null)[]>([]);
+  const balloonRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const finalRef = useRef<HTMLDivElement | null>(null);
+
+  // Prepare a bunch of balloons with randomized initial positions and sizes
+  const balloons = useMemo(() => {
+    const sprites = [ballon1, ballon2, ballon3];
+    const count = 14;
+    return Array.from({ length: count }, (_, i) => ({
+      id: i,
+      src: sprites[i % sprites.length],
+      left: Math.random() * 88 + 6, // percentage from 6% to 94%
+      scale: 0.75 + Math.random() * 0.6, // 0.75 - 1.35
+      delay: Math.random() * 2,
+    }));
+  }, []);
+
+  const launchFireworks = () => {
+    const bursts = 4;
+    const interval = 320;
+    for (let i = 0; i < bursts; i += 1) {
+      setTimeout(() => {
+        confetti({
+          particleCount: 110,
+          spread: 80,
+          scalar: 0.95,
+          origin: { x: 0.2 + Math.random() * 0.6, y: 0.9 },
+        });
+      }, i * interval);
+    }
+  };
 
   useEffect(() => {
     if (!containerRef.current) {
@@ -31,60 +69,89 @@ function HappyBirthday({ onClose }: HappyBirthdayProps) {
     }
 
     const ctx = gsap.context(() => {
-      gsap.set(photoRef.current, { autoAlpha: 0 });
+      // Initial states
+  gsap.set(titleRef.current, { autoAlpha: 0, y: -12 });
+  gsap.set(photoRef.current, { autoAlpha: 0, scale: 0.95, y: 18, force3D: true });
+  gsap.set(finalRef.current, { autoAlpha: 0, y: 10 });
       gsap.set(actionsRef.current, { autoAlpha: 0 });
-      gsap.set(balloonRefs.current, { autoAlpha: 0, yPercent: 40 });
-
-      const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
-
-      messageRefs.current.forEach((node) => {
-        if (!node) {
-          return;
-        }
-
-        gsap.set(node, { autoAlpha: 0, y: 40 });
+      gsap.set(balloonRefs.current, {
+        autoAlpha: 0,
+        y: () => window.innerHeight * 0.25,
+        transformOrigin: "50% 100%",
+        force3D: true,
       });
 
+      // Prepare message nodes hidden
       messageRefs.current.forEach((node) => {
-        if (!node) {
-          return;
-        }
+        if (!node) return;
+        gsap.set(node, { autoAlpha: 0, y: 24 });
+      });
 
-        timeline
+      // Sequence: show each message ~5s, then fade and show final
+      const sequence = gsap.timeline({ defaults: { ease: "power3.out" } });
+      messages.forEach((_, i) => {
+        const node = messageRefs.current[i];
+        if (!node) return;
+        sequence
           .to(node, { autoAlpha: 1, y: 0, duration: 0.8 })
-          .to(node, { autoAlpha: 0, y: -40, duration: 0.6 }, "+=1.8");
+          // hold visible ~4.2s then fade out
+          .to(node, { autoAlpha: 0, y: -16, duration: 0.6 }, "+=4.2");
       });
 
-      timeline
-        .to(photoRef.current, { autoAlpha: 1, duration: 0.8 }, "-=0.3")
-        .to(
-          balloonRefs.current,
-          {
-            autoAlpha: 1,
-            yPercent: -20,
-            duration: 1.6,
-            stagger: 0.2,
-            ease: "elastic.out(1, 0.85)",
-          },
-          "-=0.2"
-        )
-        .add(() => {
-          confetti({
-            particleCount: 160,
-            spread: 75,
-            origin: { y: 0.8 },
-            scalar: 0.9,
-          });
-          setTimeout(() => {
-            confetti({
-              particleCount: 120,
-              spread: 110,
-              origin: { y: 0.6 },
-              scalar: 1.1,
-            });
-          }, 300);
-        })
-        .to(actionsRef.current, { autoAlpha: 1, duration: 0.6 }, "+=0.2");
+      // After messages: reveal title, photo, button and fireworks
+      sequence
+        .to(finalRef.current, { autoAlpha: 1, y: 0, duration: 0.9, ease: "power4.out" }, "+=0.2")
+        .to(titleRef.current, { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out" }, "<0.05")
+        .to(photoRef.current, { autoAlpha: 1, y: 0, scale: 1, duration: 0.9, ease: "power3.out" }, "<")
+        .to(actionsRef.current, { autoAlpha: 1, duration: 0.6 }, "+=0.1")
+        .add(launchFireworks);
+
+      // Continuous balloon float animation
+      balloonRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const drift = 20 + Math.random() * 60; // px
+        const duration = 8 + Math.random() * 6; // seconds
+        const startDelay = (i % 7) * 0.25;
+
+        gsap.set(el, {
+          x: 0,
+          y: window.innerHeight * (0.5 + Math.random() * 0.6),
+          rotation: -4 + Math.random() * 8,
+          opacity: 0,
+        });
+
+        const loop = () => {
+          gsap
+            .timeline({ repeat: 0 })
+            .to(el, {
+              autoAlpha: 1,
+              duration: 0.6,
+              ease: "sine.out",
+              delay: startDelay,
+            })
+            .to(
+              el,
+              {
+                y: -window.innerHeight - 200,
+                x: `+=${(Math.random() > 0.5 ? 1 : -1) * drift}`,
+                rotation: "+=6",
+                duration,
+                ease: "sine.inOut",
+                onComplete: () => {
+                  // reset to bottom with new slight randomization
+                  gsap.set(el, {
+                    y: window.innerHeight + 80,
+                    x: `-=${(Math.random() > 0.5 ? 1 : -1) * drift}`,
+                    rotation: -4 + Math.random() * 8,
+                  });
+                  loop();
+                },
+              }
+            );
+        };
+
+        loop();
+      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -92,43 +159,53 @@ function HappyBirthday({ onClose }: HappyBirthdayProps) {
 
   return (
     <div className="hbd-overlay" ref={containerRef}>
-      <div className="hbd-overlay__title">Happy Birthday 🎂</div>
-      {messages.map((message, index) => (
-        <p
-          key={index}
-          ref={(element) => {
-            if (element) {
-              messageRefs.current[index] = element;
-            }
-          }}
-          className="hbd-overlay__message"
-        >
-          {message}
-        </p>
-      ))}
+      <div className="hbd-overlay__stars" aria-hidden="true" />
 
-      <div className="hbd-overlay__photo" ref={photoRef}>
-        <img src={celebrationPhoto} alt="Happy birthday celebration" />
+      <div className="hbd-overlay__content">
+        <div className="hbd-overlay__message-area">
+          {messages.map((m, idx) => (
+            <p
+              key={idx}
+              ref={(el) => (messageRefs.current[idx] = el)}
+              className="hbd-overlay__message"
+            >
+              {m}
+            </p>
+          ))}
+        </div>
+
+        <div className="hbd-overlay__final" ref={finalRef}>
+          <h1 className="hbd-overlay__title" ref={titleRef}>
+            Happy Birthday Như Quỳnh
+          </h1>
+          <div className="hbd-overlay__card" ref={photoRef}>
+            <div className="hbd-overlay__photo">
+              <img src={celebrationPhoto} alt="Happy Birthday" />
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div className="hbd-overlay__balloons">
-        {[ballon1, ballon2, ballon3].map((balloon, index) => (
+      <div className="hbd-overlay__balloons" aria-hidden="true">
+        {balloons.map((b, index) => (
           <img
-            key={balloon}
-            ref={(element) => {
-              if (element) {
-                balloonRefs.current[index] = element;
-              }
+            key={b.id}
+            ref={(el) => {
+              balloonRefs.current[index] = el;
             }}
             className="hbd-overlay__balloon"
-            src={balloon}
-            alt={`Balloon ${index + 1}`}
+            src={b.src}
+            alt=""
+            style={{ left: `${b.left}%`, transform: `scale(${b.scale})` }}
           />
         ))}
       </div>
 
       <div className="hbd-overlay__actions" ref={actionsRef}>
-        <button className="hbd-overlay__button" onClick={onClose}>
+        <button
+          className="hbd-overlay__button hbd-overlay__button--fixed"
+          onClick={onClose}
+        >
           Quay về trang chủ
         </button>
       </div>
