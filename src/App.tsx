@@ -186,7 +186,7 @@ function App() {
         <div className="text">
           {!playerData.isPlaying &&
             player &&
-            "Tap to start playing the Lofi FM 📻"}
+            "Tap to start playing the music 📻"}
           {playerData.isPlaying && playerData.isBuffering && "Buffering.. ⏳"}
         </div>
 
